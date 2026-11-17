@@ -22,6 +22,7 @@ using Application.Features.Courses.DeleteCourse;
 
 
 var builder = WebApplication.CreateBuilder(args);
+await app.Services.MigrateAndSeedAsync();
 
 builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("Database")));
