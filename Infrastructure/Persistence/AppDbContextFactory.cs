@@ -1,15 +1,18 @@
-namespace Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using Microsoft.Extensions.Configuration;
+using System.IO;
 
-public sealed class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
+namespace Infrastructure.Persistence;
+
+public class AppDbContextFactory : IDesignTimeDbContextFactory<AppDbContext>
 {
     public AppDbContext CreateDbContext(string[] args)
     {
-        var connectionString = Environment.GetEnvironmentVariable("ConnectionStrings_Database") ?? "Data Source=verticalslice.db";
-        var options = new DbContextOptionsBuilder<AppDbContext>()
-            .UseSqlite(connectionString)
-            .Options;
-        return new AppDbContext(options);
+        // Hinahanap ang Connection String o gumagamit ng default SQLite file para sa migrations
+        var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
+        optionsBuilder.UseSqlite("Data Source=app.db");
+
+        return new AppDbContext(optionsBuilder.Options);
     }
 }
