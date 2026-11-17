@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using Api.Features.Students;
 using Api.Features.Courses;
 using Api.Features.Admissions;
@@ -14,7 +15,6 @@ using Application.Features.Admissions.GetAdmissionById;
 using Domain.Common;
 using FluentValidation;
 using Infrastructure.Persistence;
-using Microsoft.EntityFrameworkCore;
 using Scalar.AspNetCore;
 using Application.Features.Admissions.GetAllAdmissions;
 using Application.Features.Courses.UpdateCourse;
@@ -23,9 +23,8 @@ using Application.Features.Courses.DeleteCourse;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Database
 builder.Services.AddDbContext<IAppDbContext, AppDbContext>(options =>
-    options.UseInMemoryDatabase("VerticalSliceDb"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("Database")));
 
 // Validators
 builder.Services.AddValidatorsFromAssemblyContaining<CreateStudentValidator>();
